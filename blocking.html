@@ -13,10 +13,15 @@
   </head>
   <body>
     <h1>Timing sequences at page loading</h1>
-    <p>
-      <a href="./youtube.html">Embed YouTube video</a>
-      <a href="./blocking.html">Blocking script in body</a>
-    </p>
+    <h2>Blocking script in Body</h2>
+    <script>
+      (() => {
+        const p = document.createElement('p');
+        p.textContent = 'for (let i = 0; i < 1000000000; i++) {}';
+        document.currentScript.before(p);
+        for (let i = 0; i < 1000000000; i++) {}
+      })();
+    </script>
     <script src="./script.js?name=body"></script>
   </body>
 </html>
