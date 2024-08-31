@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Timing sequences at page loading</title>
+    <script>
+      const logs = []
+      const setLog = (name) => {
+        logs.push({ name, time: performance.now() })
+      }
+      window.addEventListener('load', () => {
+        setLog('load')
+        requestAnimationFrame(() => {
+          const table = document.createElement('table')
+          table.innerHTML = `
+          <thead>
+            <tr>
+              <th>name</th>
+              <th>time</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${logs
+              .map(
+                ({ name, time }) =>
+                  `<tr><td>${name}</td><td>${time.toFixed(2)}</td></tr>`
+              )
+              .join('')}
+          </tbody>
+        `
+          document.body.appendChild(table)
+        })
+      })
+      requestAnimationFrame(() => {
+        setLog('requestAnimationFrame1')
+        requestAnimationFrame(() => {
+          setLog('requestAnimationFrame2')
+        })
+      })
+      document.addEventListener('DOMContentLoaded', () => {
+        setLog('DOMContentLoaded')
+      })
+      document.addEventListener('readystatechange', () => {
+        setLog('readyState:' + document.readyState)
+      })
+    </script>
+    <script src="./script.js?name=head-module" type="module"></script>
+    <script src="./script.js?name=head-defer" defer></script>
+    <script src="./script.js?name=head-async" async></script>
+    <script src="./script.js?name=head"></script>
+  </head>
+  <body>
+    <h1>Timing sequences at page loading</h1>
+    <script src="./script.js?name=body"></script>
+  </body>
+</html>
