@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Timing sequences at page loading</title>
+    <style>
+      h1 {
+        font-size: 120%;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid #666;
+        padding: 0.3em 0.5em;
+      }
+    </style>
     <script>
       const logs = []
       const setLog = (name) => {
@@ -14,17 +26,13 @@
         requestAnimationFrame(() => {
           const table = document.createElement('table')
           table.innerHTML = `
-          <thead>
-            <tr>
-              <th>name</th>
-              <th>time</th>
-            </tr>
-          </thead>
           <tbody>
             ${logs
               .map(
-                ({ name, time }) =>
-                  `<tr><td>${name}</td><td>${time.toFixed(2)}</td></tr>`
+                ({ name, time }, i) =>
+                  `<tr><td>${i + 1} ${name}</td><td>${time.toFixed(
+                    2
+                  )}ms</td></tr>`
               )
               .join('')}
           </tbody>
@@ -33,16 +41,16 @@
         })
       })
       requestAnimationFrame(() => {
-        setLog('requestAnimationFrame1')
+        setLog('requestAnimationFrame 1')
         requestAnimationFrame(() => {
-          setLog('requestAnimationFrame2')
+          setLog('requestAnimationFrame 2')
         })
       })
       document.addEventListener('DOMContentLoaded', () => {
         setLog('DOMContentLoaded')
       })
       document.addEventListener('readystatechange', () => {
-        setLog('readyState:' + document.readyState)
+        setLog('readyState: ' + document.readyState)
       })
     </script>
     <script src="./script.js?name=head-module" type="module"></script>
