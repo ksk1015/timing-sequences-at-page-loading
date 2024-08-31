@@ -1,6 +1,12 @@
 h1 {
   font-size: 120%;
 }
+nav {
+  margin-block: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.75em;
+}
 table {
   border-collapse: collapse;
 }
